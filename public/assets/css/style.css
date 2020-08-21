@@ -21,9 +21,9 @@
 	width: 100vw;
 }
 
-/* .hide {
+.hide {
 	display: none !important;
-} */
+}
 
 #start {
 	display: flex;
@@ -31,7 +31,7 @@
 	align-items: center;
 }
 
-#username-form {
+#playername-form {
 	margin: 0 auto;
 	text-align: center;
 }
@@ -65,4 +65,10 @@
 
 #score h2 {
 	padding: 0.5rem 0.75rem;
+}
+
+#score ul {
+	margin: 0;
+	padding: 0.5rem 0.75rem;
+	list-style: none;
 }
