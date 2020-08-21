@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Chat</title>
+		<title>Kill The Virus</title>
 
 		<link
 			rel="stylesheet"
@@ -16,7 +16,38 @@
 	</head>
 
 	<body>
-		<div id="app"></div>
+		<div id="app">
+			<!-- <div id="start" class="container">
+				<form id="username-form">
+					<div class="form-group">
+						<input
+							type="text"
+							id="username"
+							class="form-control form-control-lg"
+							required
+							placeholder="Enter your name"
+						/>
+					</div>
+
+					<button type="submit" class="btn btn-dark">
+						Play game
+					</button>
+				</form>
+			</div> -->
+			<!-- /#start -->
+
+			<div id="game-wrapper" class="hide">
+				<div id="game">
+					<div id="game-board"></div>
+				</div>
+				<!-- /#game -->
+				<div id="score">
+					<h2 class="text-center">Scoreboard</h2>
+				</div>
+				<!-- /#score -->
+			</div>
+			<!-- /#game-wrapper -->
+		</div>
 		<!-- /#app -->
 
 		<script src="/socket.io/socket.io.js"></script>
