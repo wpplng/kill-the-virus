@@ -11,7 +11,7 @@ function getPlayers() {
 
 /** Handle a new player connecting */
 function handleRegisterPlayer(playername, callback) {
-	debug("User '%s' connected to the game", playername);
+	debug("Player '%s' connected to the game", playername);
 	players[this.id] = playername;
 	callback({
 		joinGame: true,
@@ -23,7 +23,19 @@ function handleRegisterPlayer(playername, callback) {
 	this.broadcast.emit('online-players', getPlayers());
 }
 
+/** Handle player disconnecting */
+function handlePlayerDisconnect() {
+	debug(`Socket ${this.id} left the game.`);
+
+	// broadcast to all connected sockets that this player has left the chat
+	if (players[this.id]) {
+		this.broadcast.emit('player-disconnected', players[this.id]);
+	}
+	delete players[this.id];
+}
+
 module.exports = function (socket) {
 	debug(`Client ${socket.id} connected!`);
 	socket.on('register-player', handleRegisterPlayer);
+	socket.on('disconnect', handlePlayerDisconnect);
 };

@@ -34,3 +34,7 @@ playernameForm.addEventListener('submit', (e) => {
 socket.on('online-players', (players) => {
 	updateOnlinePlayers(players);
 });
+
+socket.on('player-disconnected', (playername) => {
+	console.log(`${playername} left the game.`);
+});
