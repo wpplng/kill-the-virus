@@ -6,8 +6,25 @@ const socket = io();
 const startEl = document.querySelector('#start');
 const playernameForm = document.querySelector('#playername-form');
 const gameWrapperEl = document.querySelector('#game-wrapper');
+const gameBoard = document.querySelector('#game-board');
+let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
+
+const getRandomPosition = () => {
+	// gameBoard.innerHTML = `<img src="./assets/images/virus-a.svg">`;
+	const boardHeight = gameBoard.clientHeight;
+	const boardWidth = gameBoard.clientWidth;
+	console.log('gameBoard', boardHeight, boardWidth);
+
+	const y = Math.floor(Math.random() * (boardHeight - 29));
+	const x = Math.floor(Math.random() * (boardWidth - 29));
+
+	virusImg.style.top = y + 'px';
+	virusImg.style.left = x + 'px';
+
+	virusImg.style.display = 'block';
+};
 
 const updateOnlinePlayers = (players) => {
 	document.querySelector('#online-players').innerHTML = players
@@ -25,9 +42,10 @@ playernameForm.addEventListener('submit', (e) => {
 		if (status.joinGame) {
 			startEl.classList.add('hide');
 			gameWrapperEl.classList.remove('hide');
-
 			updateOnlinePlayers(status.onlinePlayers);
 		}
+
+		getRandomPosition();
 	});
 });
 

@@ -4,6 +4,14 @@
 const debug = require('debug')('kill-the-virus:socket_controller');
 const players = {};
 
+/**
+ * Game
+ */
+
+/**
+ * Players
+ */
+
 /** Get names of online players */
 function getPlayers() {
 	return Object.values(players);

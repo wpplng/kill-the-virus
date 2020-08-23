@@ -50,8 +50,8 @@
 
 #game-board {
 	display: flex;
-	height: 400px;
-	width: 600px;
+	height: 500px;
+	width: 800px;
 	background-color: #89d4d3;
 	margin: auto;
 	margin-top: auto;
@@ -64,11 +64,18 @@
 }
 
 #score h2 {
-	padding: 0.5rem 0.75rem;
+	padding: 1rem 0.75rem;
 }
 
 #score ul {
 	margin: 0;
 	padding: 0.5rem 0.75rem;
 	list-style: none;
+}
+
+#game-board img {
+	width: 30px;
+	height: 30px;
+	display: none;
+	position: relative;
 }
