@@ -11,6 +11,11 @@ let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
 
+const getRandomVirus = () => {
+	const randomVirus = Math.ceil(Math.random() * 3);
+	virusImg.src = `./assets/images/virus-${randomVirus}.svg`;
+};
+
 const getRandomPosition = () => {
 	// gameBoard.innerHTML = `<img src="./assets/images/virus-a.svg">`;
 	const boardHeight = gameBoard.clientHeight;
@@ -46,6 +51,7 @@ playernameForm.addEventListener('submit', (e) => {
 		}
 
 		getRandomPosition();
+		getRandomVirus();
 	});
 });
 
