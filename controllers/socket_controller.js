@@ -3,10 +3,29 @@
  */
 const debug = require('debug')('kill-the-virus:socket_controller');
 const players = {};
+let io = null;
 
 /**
  * Game
  */
+
+function handleRandomData() {
+	const x = Math.floor(Math.random() * (600 - 29));
+	const y = Math.floor(Math.random() * (400 - 29));
+
+	const time = Math.ceil(Math.random() * 5000);
+
+	const randomVirus = Math.ceil(Math.random() * 3);
+
+	return (randomData = {
+		x,
+		y,
+		time,
+		randomVirus,
+	});
+}
+
+// om players är två ska spel startas
 
 /**
  * Players
@@ -43,7 +62,9 @@ function handlePlayerDisconnect() {
 }
 
 module.exports = function (socket) {
+	io = this;
 	debug(`Client ${socket.id} connected!`);
 	socket.on('register-player', handleRegisterPlayer);
 	socket.on('disconnect', handlePlayerDisconnect);
+	socket.emit('random-data', handleRandomData());
 };

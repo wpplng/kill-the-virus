@@ -11,26 +11,18 @@ let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
 
-const getRandomVirus = () => {
-	const randomVirus = Math.ceil(Math.random() * 3);
-	virusImg.src = `./assets/images/virus-${randomVirus}.svg`;
-};
+// skapa clickhandler för virusImg som döljer virus
 
-const getRandomPosition = () => {
-	// gameBoard.innerHTML = `<img src="./assets/images/virus-a.svg">`;
-	const boardHeight = gameBoard.clientHeight;
-	const boardWidth = gameBoard.clientWidth;
-	console.log('gameBoard', boardHeight, boardWidth);
+// starta spel som visar virus och körs i 10 omgångar
 
-	const y = Math.floor(Math.random() * (boardHeight - 29));
-	const x = Math.floor(Math.random() * (boardWidth - 29));
-
-	virusImg.style.top = y + 'px';
-	virusImg.style.left = x + 'px';
+const getRandomData = (randomData) => {
+	virusImg.style.left = randomData.x + 'px';
+	virusImg.style.top = randomData.y + 'px';
 
 	setInterval(() => {
 		virusImg.style.display = 'block';
-	}, Math.ceil(Math.random() * 5000));
+		virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
+	}, randomData.time);
 };
 
 const updateOnlinePlayers = (players) => {
@@ -51,10 +43,12 @@ playernameForm.addEventListener('submit', (e) => {
 			gameWrapperEl.classList.remove('hide');
 			updateOnlinePlayers(status.onlinePlayers);
 		}
-
-		getRandomPosition();
-		getRandomVirus();
 	});
+});
+
+socket.on('random-data', (randomData) => {
+	console.log('Random data', randomData);
+	getRandomData(randomData);
 });
 
 socket.on('online-players', (players) => {
