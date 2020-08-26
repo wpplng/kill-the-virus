@@ -35,7 +35,7 @@ function handleRegisterPlayer(playername, callback) {
 function handlePlayerDisconnect() {
 	debug(`Socket ${this.id} left the game.`);
 
-	// broadcast to all connected sockets that this player has left the chat
+	// broadcast to all connected sockets that this player has left the game
 	if (players[this.id]) {
 		this.broadcast.emit('player-disconnected', players[this.id]);
 	}

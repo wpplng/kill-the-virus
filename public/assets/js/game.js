@@ -28,7 +28,9 @@ const getRandomPosition = () => {
 	virusImg.style.top = y + 'px';
 	virusImg.style.left = x + 'px';
 
-	virusImg.style.display = 'block';
+	setInterval(() => {
+		virusImg.style.display = 'block';
+	}, Math.ceil(Math.random() * 5000));
 };
 
 const updateOnlinePlayers = (players) => {
