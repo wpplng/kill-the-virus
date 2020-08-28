@@ -31,6 +31,21 @@ const updateOnlinePlayers = (players) => {
 		.join('');
 };
 
+const startGame = (randomData, players) => {
+	console.log('startGame', randomData, players);
+	console.log('Players length', Object.keys(players).length);
+
+	if (Object.keys(players).length === 2) {
+		virusImg.style.left = randomData.x + 'px';
+		virusImg.style.top = randomData.y + 'px';
+
+		setInterval(() => {
+			virusImg.style.display = 'block';
+			virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
+		}, randomData.time);
+	}
+};
+
 // get playername from form and emit 'register-player'-event to server
 playernameForm.addEventListener('submit', (e) => {
 	e.preventDefault();
@@ -46,15 +61,14 @@ playernameForm.addEventListener('submit', (e) => {
 	});
 });
 
-socket.on('random-data', (randomData) => {
-	console.log('Random data', randomData);
-	getRandomData(randomData);
-});
-
 socket.on('online-players', (players) => {
 	updateOnlinePlayers(players);
 });
 
 socket.on('player-disconnected', (playername) => {
 	console.log(`${playername} left the game.`);
+});
+
+socket.on('start-game', (randomData, players) => {
+	startGame(randomData, players);
 });
