@@ -26,7 +26,8 @@ const getRandomData = (randomData) => {
 const updateOnlinePlayers = (players) => {
 	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
-		.map((player) => `<li class="player">${Object.values(player)}</li>`)
+		.map((player) => `<li class="player">${player.name}</li>`)
+		// .map((player) => `<li class="player">${Object.values(player)}</li>`)
 		.join('');
 };
 
