@@ -10,25 +10,33 @@ const gameBoard = document.querySelector('#game-board');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
-
-// skapa clickhandler för virusImg som döljer virus
-
-// starta spel som visar virus och körs i 10 omgångar
+let virusShown = null;
+let reactionTime = null;
 
 const getRandomData = (randomData) => {
 	virusImg.style.left = randomData.x + 'px';
 	virusImg.style.top = randomData.y + 'px';
-
-	setInterval(() => {
+	setTimeout(() => {
 		virusImg.style.display = 'block';
 		virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
+		virusShown = Date.now();
 	}, randomData.time);
 };
 
 const updateOnlinePlayers = (players) => {
+	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
-		.map((player) => `<li class="player">${player}</li>`)
+		.map((player) => `<li class="player">${Object.values(player)}</li>`)
 		.join('');
+};
+
+const newRound = (randomData, players) => {
+	virusImg.style.display = 'none';
+	virusImg.classList.remove('hide');
+
+	if (Object.keys(players).length === 2) {
+		getRandomData(randomData);
+	}
 };
 
 const startGame = (randomData, players) => {
@@ -36,15 +44,25 @@ const startGame = (randomData, players) => {
 	console.log('Players length', Object.keys(players).length);
 
 	if (Object.keys(players).length === 2) {
-		virusImg.style.left = randomData.x + 'px';
-		virusImg.style.top = randomData.y + 'px';
-
-		setInterval(() => {
-			virusImg.style.display = 'block';
-			virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
-		}, randomData.time);
+		getRandomData(randomData);
 	}
 };
+
+// handle virus click
+virusImg.addEventListener('click', () => {
+	let clickTime = Date.now();
+	reactionTime = clickTime - virusShown;
+
+	const playerData = {
+		id: socket.id,
+		reactionTime,
+	};
+
+	virusImg.classList.add('hide');
+	console.log('reaction time', reactionTime);
+
+	socket.emit('virus-click', playerData);
+});
 
 // get playername from form and emit 'register-player'-event to server
 playernameForm.addEventListener('submit', (e) => {
@@ -71,4 +89,7 @@ socket.on('player-disconnected', (playername) => {
 
 socket.on('start-game', (randomData, players) => {
 	startGame(randomData, players);
+});
+socket.on('new-round', (randomData, players) => {
+	newRound(randomData, players);
 });

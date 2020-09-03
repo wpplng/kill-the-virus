@@ -4,11 +4,13 @@
 const debug = require('debug')('kill-the-virus:socket_controller');
 const players = {};
 let io = null;
+let count = 0;
 
 /**
  * Game
  */
 
+/** Get random data */
 function handleRandomData() {
 	const x = Math.floor(Math.random() * (600 - 29));
 	const y = Math.floor(Math.random() * (400 - 29));
@@ -27,6 +29,28 @@ function handleRandomData() {
 	return getRandomData;
 }
 
+/** Handle virus click */
+function handleVirusClick(playerData) {
+	count++;
+
+	if (count % 2 !== 0) {
+		players[playerData.id].score++;
+	} else {
+		const randomData = handleRandomData();
+		io.emit('new-round', randomData, players);
+	}
+
+	debug('playerData in s_c', playerData);
+
+	let player = {
+		name: players[playerData.id].name,
+		id: playerData.id,
+		reactionTime: playerData.reactionTime,
+	};
+
+	debug('players', players);
+}
+
 /**
  * Players
  */
@@ -41,7 +65,7 @@ function handleRegisterPlayer(playername, callback) {
 	debug("Player '%s' connected to the game", playername);
 	const randomData = handleRandomData();
 	debug('This is randomData', randomData);
-	players[this.id] = playername;
+	players[this.id] = { name: playername, score: 0 };
 	callback({
 		joinGame: true,
 		playernameInUse: false,
@@ -71,4 +95,5 @@ module.exports = function (socket) {
 	debug(`Client ${socket.id} connected!`);
 	socket.on('register-player', handleRegisterPlayer);
 	socket.on('disconnect', handlePlayerDisconnect);
+	socket.on('virus-click', handleVirusClick);
 };
