@@ -58,7 +58,7 @@
 }
 
 #game .alert {
-	display: flex;
+	/* display: flex; */
 	margin: auto;
 }
 

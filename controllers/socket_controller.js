@@ -34,6 +34,7 @@ function handleRandomData() {
 /** Handle virus click */
 function handleVirusClick(playerData) {
 	count++;
+	debug('Rounds', rounds);
 
 	if (count % 2 !== 0) {
 		players[playerData.id].score++;
@@ -44,9 +45,18 @@ function handleVirusClick(playerData) {
 		if (rounds < maxRounds) {
 			io.emit('new-round', randomData, players);
 		} else if (rounds === maxRounds) {
-			debug('Do we get here?');
+			debug('Do we get here?', players[playerData.id].score);
 			io.emit('end-game', players);
 			rounds = 0;
+			// if (players[this.id].score > 5) {
+			// 	debug('Who is this?', players[this.id]);
+			// 	io.emit('end-game', players, players[this.id]);
+			// } else if (players[this.id].score === 5) {
+			// 	io.emit('draw', players);
+			// 	// } else {
+			// 	// 	io.emit('loser', players[playerData.id]);
+			// 	// 	io.emit('end-game', players, players[playerData.id]);
+			// }
 		}
 	}
 
@@ -99,6 +109,7 @@ function handlePlayerDisconnect() {
 		this.broadcast.emit('player-disconnected', players[this.id]);
 	}
 	delete players[this.id];
+	rounds = 0;
 }
 
 module.exports = function (socket) {

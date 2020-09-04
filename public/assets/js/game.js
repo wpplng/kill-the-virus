@@ -8,6 +8,7 @@ const playernameForm = document.querySelector('#playername-form');
 const gameWrapperEl = document.querySelector('#game-wrapper');
 const gameBoard = document.querySelector('#game-board');
 const game = document.querySelector('#game');
+const gameOver = document.querySelector('#game-over');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
@@ -27,8 +28,17 @@ const getRandomData = (randomData) => {
 const updateOnlinePlayers = (players) => {
 	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
-		.map((player) => `<li class="player">${player.name}</li>`)
-		.join('');
+		.map((player) => `<h3 class='d-inline'>${player.name}</h3>`)
+		.join(' - ');
+};
+
+const updateScoreBoard = (players) => {
+	document.querySelector('#online-players').innerHTML = Object.values(players)
+		.map(
+			(player) =>
+				`<h3 class='d-inline'>${player.name} ${player.score}</h3>`
+		)
+		.join(' - ');
 };
 
 const startGame = (randomData, players) => {
@@ -46,16 +56,23 @@ const newRound = (randomData, players) => {
 
 	if (Object.keys(players).length === 2) {
 		getRandomData(randomData);
+		updateScoreBoard(players);
 	}
 };
 
 const endGame = (players) => {
 	console.log('Game over', players);
 	gameBoard.classList.add('hide');
+	gameOver.classList.remove('hide');
 
-	game.innerHTML = `<div class="alert alert-secondary" role="alert">
-	Game Over
-  </div>`;
+	updateScoreBoard(players);
+
+	gameOver.innerHTML += Object.values(players)
+		.map(
+			(player) => `	
+			<h3 class='d-inline'>${player.name} ${player.score}</h3></div>`
+		)
+		.join(' - ');
 };
 
 // handle virus click
