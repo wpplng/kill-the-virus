@@ -32,7 +32,9 @@
 	align-items: center;
 }
 
-#playername-form {
+#playername-form,
+#game-over,
+#opponant-left {
 	margin: 0 auto;
 	text-align: center;
 }
@@ -64,10 +66,13 @@
 	color: #46555e;
 	border-color: #edcb4e;
 	padding: 2rem 5rem;
+	margin-bottom: 1rem;
 }
+
 #game .alert h2 {
 	font-size: 1.5rem;
 }
+
 #game .alert h3 {
 	font-size: 2rem;
 }
@@ -84,11 +89,6 @@
 	margin-bottom: 1rem;
 }
 
-/* #score {
-	margin: 0;
-	padding: 0.5rem 0.75rem;
-} */
-
 #online-players {
 	background-color: #ff805a;
 	padding: 0.5rem 0;
@@ -104,7 +104,16 @@
 }
 
 #too-many-players,
-#opponant-left {
+#opponant-left,
+#game-over {
 	display: flex;
 	height: 100vh;
+	flex-direction: column;
+}
+
+#game-over .btn,
+#opponant-left .btn {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: auto;
 }

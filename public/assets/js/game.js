@@ -9,8 +9,11 @@ const gameWrapperEl = document.querySelector('#game-wrapper');
 const gameBoard = document.querySelector('#game-board');
 const game = document.querySelector('#game');
 const gameOver = document.querySelector('#game-over');
+const gameOverAlert = document.querySelector('#game-over-alert');
 const tooManyPlayers = document.querySelector('#too-many-players');
 const opponantLeft = document.querySelector('#opponant-left');
+const playAgain = document.querySelector('#play-again');
+const playAgainDisconnect = document.querySelector('#play-again-disconnect');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
@@ -69,7 +72,7 @@ const endGame = (players) => {
 
 	updateScoreBoard(players);
 
-	gameOver.innerHTML += Object.values(players)
+	gameOverAlert.innerHTML += Object.values(players)
 		.map(
 			(player) => `	
 			<h3 class='d-inline'>${player.name} <span class='font-weight-bold'>${player.score}</span></h3></div>`
@@ -108,19 +111,32 @@ playernameForm.addEventListener('submit', (e) => {
 	});
 });
 
+playAgain.addEventListener('submit', (e) => {
+	e.preventDefault();
+	gameWrapperEl.classList.add('hide');
+	gameOver.classList.add('hide');
+	startEl.classList.remove('hide');
+	gameBoard.classList.remove('hide');
+	virusImg.classList.add('hide');
+});
+
+playAgainDisconnect.addEventListener('submit', (e) => {
+	e.preventDefault();
+	opponantLeft.classList.add('hide');
+	startEl.classList.remove('hide');
+	gameBoard.classList.remove('hide');
+	virusImg.classList.add('hide');
+});
+
 socket.on('online-players', (players) => {
 	updateOnlinePlayers(players);
 });
 
 socket.on('player-disconnected', (players) => {
 	console.log(`One player left the game.`);
+	updateOnlinePlayers(Object.values(players));
 	gameWrapperEl.classList.add('hide');
 	opponantLeft.classList.remove('hide');
-
-	opponantLeft.innerHTML = `<div class="alert alert-secondary text-center" role="alert">
-	<p>Your opponant left the game. Please start a new game.</p>
-	</div>`;
-	// updateOnlinePlayers(Object.values(players));
 });
 
 socket.on('start-game', (randomData, players) => {

@@ -51,14 +51,15 @@
 							alt=""
 						/>
 					</div>
-					<div
-						id="game-over"
-						class="alert alert-secondary hide text-center"
-						role="alert"
-					>
-						<h1>Game Over</h1>
-						<h2>the final score is:</h2>
-					</div>
+					<form id="game-over" class="hide">
+						<div id="game-over-alert" class="alert alert-secondary text-center" role="alert">
+							<h1>Game Over</h1>
+							<h2>the final score is:</h2>
+						</div>
+						<button id="play-again" type="submit" class="btn btn-dark">
+							Play again
+						</button>
+					</form>
 				</div>
 				<!-- /#game -->
 				<div id="score">
@@ -69,7 +70,14 @@
 			</div>
 			<!-- /#game-wrapper -->
 			<div id></div>
-			<div id="opponant-left" class="hide"></div>
+			<form id="opponant-left" class="hide">
+				<div id="opponant-left-alert" class="alert alert-secondary text-center" role="alert">
+					<p>Your opponant left the game.</p>
+				</div>
+				<button id="play-again-disconnect" type="submit" class="btn btn-dark">
+					Play again
+				</button>
+			</form>
 		<!-- /#app -->
 
 		<script src="/socket.io/socket.io.js"></script>

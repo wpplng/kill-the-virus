@@ -2,11 +2,11 @@
  * Socket Controller
  */
 const debug = require('debug')('kill-the-virus:socket_controller');
-const players = {};
+let players = {};
 let io = null;
 let count = 0;
 let rounds = 0;
-const maxRounds = 10;
+const maxRounds = 3;
 
 /**
  * Game
@@ -46,20 +46,22 @@ function handleVirusClick(playerData) {
 			io.emit('new-round', randomData, players);
 		} else if (rounds === maxRounds) {
 			io.emit('end-game', players);
+			delete players[this.id];
 			rounds = 0;
+			players = {};
 		}
 	}
 
 	debug('playerData in s_c', playerData);
 
-	let player = {
-		name: players[playerData.id].name,
-		id: playerData.id,
-		reactionTime: playerData.reactionTime,
-	};
+	// let player = {
+	// 	name: players[playerData.id].name,
+	// 	id: playerData.id,
+	// 	reactionTime: playerData.reactionTime,
+	// };
 
-	debug('players', players);
-	debug('player', player);
+	// debug('players', players);
+	// debug('player', player);
 }
 
 /**
@@ -102,10 +104,11 @@ function handlePlayerDisconnect() {
 
 	// broadcast to all connected sockets that this player has left the game
 	if (players[this.id]) {
-		delete players[this.id];
 		this.broadcast.emit('player-disconnected', players);
 	}
+	delete players[this.id];
 	rounds = 0;
+	players = {};
 }
 
 module.exports = function (socket) {
