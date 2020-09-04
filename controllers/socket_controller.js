@@ -5,6 +5,8 @@ const debug = require('debug')('kill-the-virus:socket_controller');
 const players = {};
 let io = null;
 let count = 0;
+let rounds = 0;
+const maxRounds = 10;
 
 /**
  * Game
@@ -35,9 +37,17 @@ function handleVirusClick(playerData) {
 
 	if (count % 2 !== 0) {
 		players[playerData.id].score++;
+		rounds++;
 	} else {
 		const randomData = handleRandomData();
-		io.emit('new-round', randomData, players);
+		debug('round', rounds);
+		if (rounds < maxRounds) {
+			io.emit('new-round', randomData, players);
+		} else if (rounds === maxRounds) {
+			debug('Do we get here?');
+			io.emit('end-game', players);
+			rounds = 0;
+		}
 	}
 
 	debug('playerData in s_c', playerData);
@@ -49,6 +59,7 @@ function handleVirusClick(playerData) {
 	};
 
 	debug('players', players);
+	debug('player', player);
 }
 
 /**

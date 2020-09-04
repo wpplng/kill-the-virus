@@ -7,6 +7,7 @@ const startEl = document.querySelector('#start');
 const playernameForm = document.querySelector('#playername-form');
 const gameWrapperEl = document.querySelector('#game-wrapper');
 const gameBoard = document.querySelector('#game-board');
+const game = document.querySelector('#game');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
@@ -27,8 +28,16 @@ const updateOnlinePlayers = (players) => {
 	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
 		.map((player) => `<li class="player">${player.name}</li>`)
-		// .map((player) => `<li class="player">${Object.values(player)}</li>`)
 		.join('');
+};
+
+const startGame = (randomData, players) => {
+	console.log('startGame', randomData, players);
+	console.log('Players length', Object.keys(players).length);
+
+	if (Object.keys(players).length === 2) {
+		getRandomData(randomData);
+	}
 };
 
 const newRound = (randomData, players) => {
@@ -40,13 +49,13 @@ const newRound = (randomData, players) => {
 	}
 };
 
-const startGame = (randomData, players) => {
-	console.log('startGame', randomData, players);
-	console.log('Players length', Object.keys(players).length);
+const endGame = (players) => {
+	console.log('Game over', players);
+	gameBoard.classList.add('hide');
 
-	if (Object.keys(players).length === 2) {
-		getRandomData(randomData);
-	}
+	game.innerHTML = `<div class="alert alert-secondary" role="alert">
+	Game Over
+  </div>`;
 };
 
 // handle virus click
@@ -84,8 +93,8 @@ socket.on('online-players', (players) => {
 	updateOnlinePlayers(players);
 });
 
-socket.on('player-disconnected', (playername) => {
-	console.log(`${playername} left the game.`);
+socket.on('player-disconnected', (player) => {
+	console.log(`${player.name} left the game.`);
 });
 
 socket.on('start-game', (randomData, players) => {
@@ -93,4 +102,8 @@ socket.on('start-game', (randomData, players) => {
 });
 socket.on('new-round', (randomData, players) => {
 	newRound(randomData, players);
+});
+
+socket.on('end-game', (players) => {
+	endGame(players);
 });

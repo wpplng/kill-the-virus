@@ -57,6 +57,11 @@
 	margin-top: auto;
 }
 
+#game .alert {
+	display: flex;
+	margin: auto;
+}
+
 #score {
 	background-color: #46555e;
 	flex-basis: 20%;
