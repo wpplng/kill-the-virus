@@ -105,7 +105,6 @@ function handlePlayerDisconnect() {
 		delete players[this.id];
 		this.broadcast.emit('player-disconnected', players);
 	}
-	// delete players;
 	rounds = 0;
 }
 

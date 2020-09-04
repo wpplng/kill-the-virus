@@ -102,3 +102,9 @@
 	display: none;
 	position: relative;
 }
+
+#too-many-players,
+#opponant-left {
+	display: flex;
+	height: 100vh;
+}
