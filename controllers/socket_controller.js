@@ -77,17 +77,23 @@ function handleRegisterPlayer(playername, callback) {
 	const randomData = handleRandomData();
 	debug('This is randomData', randomData);
 	players[this.id] = { name: playername, score: 0 };
-	callback({
-		joinGame: true,
-		playernameInUse: false,
-		onlinePlayers: getPlayers(),
-	});
-	debug('Players', Object.keys(players).length);
+	if (Object.keys(players).length <= 2) {
+		callback({
+			joinGame: true,
+			playernameInUse: false,
+			onlinePlayers: getPlayers(),
+		});
+		debug('Players', Object.keys(players).length);
 
-	// broadcast online players to all connected sockets EXCEPT ourselves
-	this.broadcast.emit('online-players', getPlayers());
-	// emit start-game event
-	io.emit('start-game', randomData, players);
+		// broadcast online players to all connected sockets EXCEPT ourselves
+		this.broadcast.emit('online-players', getPlayers());
+		if (Object.keys(players).length === 2)
+			// emit start-game event
+			io.emit('start-game', randomData, players);
+	} else {
+		this.emit('too-many-players');
+		delete players[this.id];
+	}
 }
 
 /** Handle player disconnecting */
@@ -96,9 +102,10 @@ function handlePlayerDisconnect() {
 
 	// broadcast to all connected sockets that this player has left the game
 	if (players[this.id]) {
-		this.broadcast.emit('player-disconnected', players[this.id]);
+		delete players[this.id];
+		this.broadcast.emit('player-disconnected', players);
 	}
-	delete players[this.id];
+	// delete players;
 	rounds = 0;
 }
 

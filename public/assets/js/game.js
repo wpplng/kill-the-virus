@@ -9,6 +9,8 @@ const gameWrapperEl = document.querySelector('#game-wrapper');
 const gameBoard = document.querySelector('#game-board');
 const game = document.querySelector('#game');
 const gameOver = document.querySelector('#game-over');
+const tooManyPlayers = document.querySelector('#too-many-players');
+const opponantLeft = document.querySelector('#opponant-left');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
@@ -110,8 +112,15 @@ socket.on('online-players', (players) => {
 	updateOnlinePlayers(players);
 });
 
-socket.on('player-disconnected', (player) => {
-	console.log(`${player.name} left the game.`);
+socket.on('player-disconnected', (players) => {
+	console.log(`One player left the game.`);
+	gameWrapperEl.classList.add('hide');
+	opponantLeft.classList.remove('hide');
+
+	opponantLeft.innerHTML = `<div class="alert alert-secondary text-center" role="alert">
+	<p>Your opponant left the game. Please start a new game.</p>
+	</div>`;
+	// updateOnlinePlayers(Object.values(players));
 });
 
 socket.on('start-game', (randomData, players) => {
@@ -123,4 +132,13 @@ socket.on('new-round', (randomData, players) => {
 
 socket.on('end-game', (players) => {
 	endGame(players);
+});
+
+socket.on('too-many-players', () => {
+	startEl.classList.add('hide');
+	tooManyPlayers.classList.remove('hide');
+
+	tooManyPlayers.innerHTML = `<div class="alert alert-secondary text-center" role="alert">
+		<p>Too many players, please try again later.</p>
+		</div>`;
 });
