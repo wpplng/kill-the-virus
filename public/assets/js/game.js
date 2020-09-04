@@ -28,17 +28,17 @@ const getRandomData = (randomData) => {
 const updateOnlinePlayers = (players) => {
 	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
-		.map((player) => `<h3 class='d-inline'>${player.name}</h3>`)
-		.join(' - ');
+		.map((player) => `<h3>${player.name}</h3>`)
+		.join(' vs ');
 };
 
 const updateScoreBoard = (players) => {
 	document.querySelector('#online-players').innerHTML = Object.values(players)
 		.map(
 			(player) =>
-				`<h3 class='d-inline'>${player.name} ${player.score}</h3>`
+				`<h3>${player.name} <span class='font-weight-bold'>${player.score}</span></h3>`
 		)
-		.join(' - ');
+		.join(' vs ');
 };
 
 const startGame = (randomData, players) => {
@@ -70,9 +70,9 @@ const endGame = (players) => {
 	gameOver.innerHTML += Object.values(players)
 		.map(
 			(player) => `	
-			<h3 class='d-inline'>${player.name} ${player.score}</h3></div>`
+			<h3 class='d-inline'>${player.name} <span class='font-weight-bold'>${player.score}</span></h3></div>`
 		)
-		.join(' - ');
+		.join(' vs ');
 };
 
 // handle virus click

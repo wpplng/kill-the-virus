@@ -45,18 +45,8 @@ function handleVirusClick(playerData) {
 		if (rounds < maxRounds) {
 			io.emit('new-round', randomData, players);
 		} else if (rounds === maxRounds) {
-			debug('Do we get here?', players[playerData.id].score);
 			io.emit('end-game', players);
 			rounds = 0;
-			// if (players[this.id].score > 5) {
-			// 	debug('Who is this?', players[this.id]);
-			// 	io.emit('end-game', players, players[this.id]);
-			// } else if (players[this.id].score === 5) {
-			// 	io.emit('draw', players);
-			// 	// } else {
-			// 	// 	io.emit('loser', players[playerData.id]);
-			// 	// 	io.emit('end-game', players, players[playerData.id]);
-			// }
 		}
 	}
 

@@ -19,6 +19,7 @@
 	background-color: #4f787d;
 	height: 100vh;
 	width: 100vw;
+	font-family: 'Roboto Mono', monospace;
 }
 
 .hide {
@@ -58,8 +59,17 @@
 }
 
 #game .alert {
-	/* display: flex; */
 	margin: auto;
+	background-color: #edcb4e;
+	color: #46555e;
+	border-color: #edcb4e;
+	padding: 2rem 5rem;
+}
+#game .alert h2 {
+	font-size: 1.5rem;
+}
+#game .alert h3 {
+	font-size: 2rem;
 }
 
 #score {
@@ -70,12 +80,20 @@
 
 #score h2 {
 	padding: 1rem 0.75rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 }
 
-#score ul {
+/* #score {
 	margin: 0;
 	padding: 0.5rem 0.75rem;
-	list-style: none;
+} */
+
+#online-players {
+	background-color: #ff805a;
+	padding: 0.5rem 0;
+	margin: 0 0.5rem;
+	border-color: #46555e;
 }
 
 #game-board img {
