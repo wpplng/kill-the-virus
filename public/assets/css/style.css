@@ -60,7 +60,8 @@
 	margin-top: auto;
 }
 
-#app .alert {
+#game-over-alert,
+#opponant-left-alert {
 	margin: auto;
 	background-color: #edcb4e;
 	color: #46555e;
@@ -69,14 +70,18 @@
 	margin-bottom: 1rem;
 }
 
+#too-many-players-alert {
+	margin: auto;
+	background-color: #edcb4e;
+	color: #46555e;
+	border-color: #edcb4e;
+	padding: 2rem 5rem;
+}
+
 #game .alert h2 {
 	font-size: 1.75rem;
 	padding-top: 1rem;
 }
-
-/* #game .alert h3 {
-	font-size: 2rem;
-} */
 
 #score {
 	background-color: #46555e;

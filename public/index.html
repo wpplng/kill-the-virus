@@ -52,9 +52,16 @@
 						/>
 					</div>
 					<div id="game-over" class="hide">
-						<div id="game-over-alert" class="alert alert-secondary text-center" role="alert">
-						</div>
-						<button id="play-again" type="submit" class="btn btn-dark">
+						<div
+							id="game-over-alert"
+							class="alert alert-secondary text-center"
+							role="alert"
+						></div>
+						<button
+							id="play-again"
+							type="submit"
+							class="btn btn-dark"
+						>
 							Play again
 						</button>
 					</div>
@@ -67,15 +74,26 @@
 				<!-- /#score -->
 			</div>
 			<!-- /#game-wrapper -->
-			<div id></div>
-			<form id="opponant-left" class="hide">
-				<div id="opponant-left-alert" class="alert alert-secondary text-center" role="alert">
-					<p>Your opponant left the game.</p>
-				</div>
-				<button id="play-again-disconnect" type="submit" class="btn btn-dark">
-					Play again
-				</button>
-			</form>
+			<div id="opponant-left-wrapper">
+				<form id="opponant-left" class="hide">
+					<div
+						id="opponant-left-alert"
+						class="alert alert-secondary text-center"
+						role="alert"
+					>
+						<p>Your opponant left the game.</p>
+					</div>
+					<button
+						id="play-again-disconnect"
+						type="submit"
+						class="btn btn-dark"
+					>
+						Play again
+					</button>
+				</form>
+			</div>
+			<!-- /#opponant-left-wrapper -->
+		</div>
 		<!-- /#app -->
 
 		<script src="/socket.io/socket.io.js"></script>

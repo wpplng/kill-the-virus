@@ -12,6 +12,7 @@ const gameOver = document.querySelector('#game-over');
 const gameOverAlert = document.querySelector('#game-over-alert');
 const tooManyPlayers = document.querySelector('#too-many-players');
 const opponantLeft = document.querySelector('#opponant-left');
+const opponantLeftWrapper = document.querySelector('#opponant-left-wrapper');
 const playAgain = document.querySelector('#play-again');
 const playAgainDisconnect = document.querySelector('#play-again-disconnect');
 let virusImg = document.querySelector('#virus-img');
@@ -152,8 +153,9 @@ socket.on('end-game', (players, winner) => {
 socket.on('too-many-players', () => {
 	startEl.classList.add('hide');
 	tooManyPlayers.classList.remove('hide');
+	opponantLeftWrapper.classList.add('hide');
 
-	tooManyPlayers.innerHTML = `<div class="alert alert-secondary text-center" role="alert">
+	tooManyPlayers.innerHTML = `<div id="too-many-players-alert" class="alert alert-secondary text-center" role="alert">
 		<p>Too many players, please come back later.</p>
 		</div>`;
 });
