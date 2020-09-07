@@ -65,19 +65,23 @@ const newRound = (randomData, players) => {
 	}
 };
 
-const endGame = (players) => {
-	console.log('Game over', players);
+const endGame = (players, winner) => {
+	console.log('Game over', players, winner);
 	gameBoard.classList.add('hide');
 	gameOver.classList.remove('hide');
 
 	updateScoreBoard(players);
 
-	gameOverAlert.innerHTML += Object.values(players)
-		.map(
-			(player) => `	
-			<h3 class='d-inline'>${player.name} <span class='font-weight-bold'>${player.score}</span></h3></div>`
-		)
-		.join(' vs ');
+	gameOverAlert.innerHTML += winner
+		? `<h2 class='my-2'>The winner is ${winner}</h2>`
+		: `<h2 class='my-2'>It's a tie!</h2>`;
+
+	// gameOverAlert.innerHTML += Object.values(players)
+	// 	.map(
+	// 		(player) => `
+	// 		<h3 class='d-inline'>${player.name} <span class='font-weight-bold'>${player.score}</span></h3></div>`
+	// 	)
+	// 	.join(' vs ');
 };
 
 // handle virus click
@@ -111,7 +115,7 @@ playernameForm.addEventListener('submit', (e) => {
 	});
 });
 
-playAgain.addEventListener('submit', (e) => {
+playAgain.addEventListener('click', (e) => {
 	e.preventDefault();
 	gameWrapperEl.classList.add('hide');
 	gameOver.classList.add('hide');
@@ -146,8 +150,8 @@ socket.on('new-round', (randomData, players) => {
 	newRound(randomData, players);
 });
 
-socket.on('end-game', (players) => {
-	endGame(players);
+socket.on('end-game', (players, winner) => {
+	endGame(players, winner);
 });
 
 socket.on('too-many-players', () => {

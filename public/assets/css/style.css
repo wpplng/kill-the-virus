@@ -70,12 +70,13 @@
 }
 
 #game .alert h2 {
-	font-size: 1.5rem;
+	font-size: 1.75rem;
+	padding-top: 1rem;
 }
 
-#game .alert h3 {
+/* #game .alert h3 {
 	font-size: 2rem;
-}
+} */
 
 #score {
 	background-color: #46555e;

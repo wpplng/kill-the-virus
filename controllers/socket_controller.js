@@ -6,7 +6,7 @@ let players = {};
 let io = null;
 let count = 0;
 let rounds = 0;
-const maxRounds = 3;
+const maxRounds = 10;
 
 /**
  * Game
@@ -35,6 +35,7 @@ function handleRandomData() {
 function handleVirusClick(playerData) {
 	count++;
 	debug('Rounds', rounds);
+	let winner;
 
 	if (count % 2 !== 0) {
 		players[playerData.id].score++;
@@ -45,23 +46,22 @@ function handleVirusClick(playerData) {
 		if (rounds < maxRounds) {
 			io.emit('new-round', randomData, players);
 		} else if (rounds === maxRounds) {
-			io.emit('end-game', players);
+			Object.values(players).map((player) => {
+				debug('Player', player);
+				if (player.score > 5) {
+					winner = player.name;
+					debug('Winner', winner);
+					return winner;
+				}
+			});
+
+			debug('Winner', winner);
+			io.emit('end-game', players, winner);
 			delete players[this.id];
 			rounds = 0;
 			players = {};
 		}
 	}
-
-	debug('playerData in s_c', playerData);
-
-	// let player = {
-	// 	name: players[playerData.id].name,
-	// 	id: playerData.id,
-	// 	reactionTime: playerData.reactionTime,
-	// };
-
-	// debug('players', players);
-	// debug('player', player);
 }
 
 /**
