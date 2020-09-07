@@ -14,18 +14,21 @@ const maxRounds = 10;
 
 /** Get random data */
 function handleRandomData() {
-	const x = Math.floor(Math.random() * (600 - 29));
-	const y = Math.floor(Math.random() * (400 - 29));
-
 	const time = Math.ceil(Math.random() * 5000);
 
 	const randomVirus = Math.ceil(Math.random() * 3);
+
+	const randomSize = Math.floor(Math.random() * (60 - 20)) + 20;
+
+	const x = Math.ceil(Math.random() * (600 - randomSize));
+	const y = Math.ceil(Math.random() * (400 - randomSize));
 
 	const getRandomData = {
 		x,
 		y,
 		time,
 		randomVirus,
+		randomSize,
 	};
 
 	return getRandomData;

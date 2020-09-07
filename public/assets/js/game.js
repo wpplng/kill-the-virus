@@ -25,6 +25,8 @@ const getRandomData = (randomData) => {
 	virusImg.style.top = randomData.y + 'px';
 	setTimeout(() => {
 		virusImg.classList.remove('hide');
+		virusImg.style.width = randomData.randomSize + 'px';
+		virusImg.style.height = randomData.randomSize + 'px';
 		virusImg.style.display = 'block';
 		virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
 		virusShown = Date.now();
