@@ -104,10 +104,10 @@ function handlePlayerDisconnect() {
 	// broadcast to all connected sockets that this player has left the game
 	if (players[this.id]) {
 		this.broadcast.emit('player-disconnected', players);
+		rounds = 0;
+		players = {};
 	}
 	delete players[this.id];
-	rounds = 0;
-	players = {};
 }
 
 module.exports = function (socket) {
