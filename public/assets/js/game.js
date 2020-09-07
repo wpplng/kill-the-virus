@@ -24,6 +24,7 @@ const getRandomData = (randomData) => {
 	virusImg.style.left = randomData.x + 'px';
 	virusImg.style.top = randomData.y + 'px';
 	setTimeout(() => {
+		virusImg.classList.remove('hide');
 		virusImg.style.display = 'block';
 		virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
 		virusShown = Date.now();
@@ -72,16 +73,9 @@ const endGame = (players, winner) => {
 
 	updateScoreBoard(players);
 
-	gameOverAlert.innerHTML += winner
-		? `<h2 class='my-2'>The winner is ${winner}</h2>`
-		: `<h2 class='my-2'>It's a tie!</h2>`;
-
-	// gameOverAlert.innerHTML += Object.values(players)
-	// 	.map(
-	// 		(player) => `
-	// 		<h3 class='d-inline'>${player.name} <span class='font-weight-bold'>${player.score}</span></h3></div>`
-	// 	)
-	// 	.join(' vs ');
+	gameOverAlert.innerHTML = winner
+		? `<h1>Game Over</h1><h2 class='my-2'>The winner is ${winner}</h2>`
+		: `<h1>Game Over</h1><h2 class='my-2'>It's a tie!</h2>`;
 };
 
 // handle virus click
@@ -116,7 +110,6 @@ playernameForm.addEventListener('submit', (e) => {
 });
 
 playAgain.addEventListener('click', (e) => {
-	e.preventDefault();
 	gameWrapperEl.classList.add('hide');
 	gameOver.classList.add('hide');
 	startEl.classList.remove('hide');
@@ -159,6 +152,6 @@ socket.on('too-many-players', () => {
 	tooManyPlayers.classList.remove('hide');
 
 	tooManyPlayers.innerHTML = `<div class="alert alert-secondary text-center" role="alert">
-		<p>Too many players, please try again later.</p>
+		<p>Too many players, please come back later.</p>
 		</div>`;
 });

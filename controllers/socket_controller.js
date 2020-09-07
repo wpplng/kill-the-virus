@@ -76,8 +76,7 @@ function getPlayers() {
 /** Handle a new player connecting */
 function handleRegisterPlayer(playername, callback) {
 	debug("Player '%s' connected to the game", playername);
-	const randomData = handleRandomData();
-	debug('This is randomData', randomData);
+
 	players[this.id] = { name: playername, score: 0 };
 	if (Object.keys(players).length <= 2) {
 		callback({
@@ -91,7 +90,7 @@ function handleRegisterPlayer(playername, callback) {
 		this.broadcast.emit('online-players', getPlayers());
 		if (Object.keys(players).length === 2)
 			// emit start-game event
-			io.emit('start-game', randomData, players);
+			io.emit('start-game', handleRandomData(), players);
 	} else {
 		this.emit('too-many-players');
 		delete players[this.id];
