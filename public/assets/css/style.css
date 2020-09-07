@@ -1,18 +1,5 @@
-/* Color Theme Swatches in Hex */
-.Spel-1-hex {
-	color: #edcb4e;
-}
-.Spel-2-hex {
-	color: #ff805a;
-}
-.Spel-3-hex {
-	color: #46555e;
-}
-.Spel-4-hex {
-	color: #4f787d;
-}
-.Spel-5-hex {
-	color: #89d4d3;
+.hide {
+	display: none !important;
 }
 
 #app {
@@ -22,33 +9,16 @@
 	font-family: 'Roboto Mono', monospace;
 }
 
-.hide {
-	display: none !important;
-}
-
-#start {
-	display: flex;
-	height: 100vh;
-	align-items: center;
-}
-
-#playername-form,
-#game-over,
-#opponant-left {
-	margin: 0 auto;
-	text-align: center;
-}
-
-#game-wrapper {
-	display: flex;
-	height: 100vh;
-}
-
 #game {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
 	border-right: 1px solid #46555e;
+}
+
+#game .alert h2 {
+	font-size: 1.75rem;
+	padding-top: 1rem;
 }
 
 #game-board {
@@ -58,6 +28,13 @@
 	background-color: #89d4d3;
 	margin: auto;
 	margin-top: auto;
+}
+
+#game-board img {
+	width: 30px;
+	height: 30px;
+	display: none;
+	position: relative;
 }
 
 #game-over-alert,
@@ -70,17 +47,38 @@
 	margin-bottom: 1rem;
 }
 
-#too-many-players-alert {
-	margin: auto;
-	background-color: #edcb4e;
-	color: #46555e;
-	border-color: #edcb4e;
-	padding: 2rem 5rem;
+#game-over,
+#opponant-left,
+#playername-form {
+	margin: 0 auto;
+	text-align: center;
 }
 
-#game .alert h2 {
-	font-size: 1.75rem;
-	padding-top: 1rem;
+#game-over,
+#opponant-left,
+#too-many-players {
+	display: flex;
+	height: 100vh;
+	flex-direction: column;
+}
+
+#game-over .btn,
+#opponant-left .btn {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+}
+
+#game-wrapper {
+	display: flex;
+	height: 100vh;
+}
+
+#online-players {
+	background-color: #ff805a;
+	padding: 0.5rem 0;
+	margin: 0 0.5rem;
+	border-color: #46555e;
 }
 
 #score {
@@ -95,31 +93,16 @@
 	margin-bottom: 1rem;
 }
 
-#online-players {
-	background-color: #ff805a;
-	padding: 0.5rem 0;
-	margin: 0 0.5rem;
-	border-color: #46555e;
-}
-
-#game-board img {
-	width: 30px;
-	height: 30px;
-	display: none;
-	position: relative;
-}
-
-#too-many-players,
-#opponant-left,
-#game-over {
+#start {
 	display: flex;
 	height: 100vh;
-	flex-direction: column;
+	align-items: center;
 }
 
-#game-over .btn,
-#opponant-left .btn {
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: auto;
+#too-many-players-alert {
+	margin: auto;
+	background-color: #edcb4e;
+	color: #46555e;
+	border-color: #edcb4e;
+	padding: 2rem 5rem;
 }

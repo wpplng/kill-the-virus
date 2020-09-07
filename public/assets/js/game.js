@@ -1,26 +1,31 @@
 /**
- * Game
+ * Client
  */
 const socket = io();
 
-const startEl = document.querySelector('#start');
-const playernameForm = document.querySelector('#playername-form');
-const gameWrapperEl = document.querySelector('#game-wrapper');
-const gameBoard = document.querySelector('#game-board');
 const game = document.querySelector('#game');
+const gameBoard = document.querySelector('#game-board');
 const gameOver = document.querySelector('#game-over');
 const gameOverAlert = document.querySelector('#game-over-alert');
-const tooManyPlayers = document.querySelector('#too-many-players');
+const gameWrapperEl = document.querySelector('#game-wrapper');
 const opponantLeft = document.querySelector('#opponant-left');
 const opponantLeftWrapper = document.querySelector('#opponant-left-wrapper');
 const playAgain = document.querySelector('#play-again');
 const playAgainDisconnect = document.querySelector('#play-again-disconnect');
+const playernameForm = document.querySelector('#playername-form');
+const startEl = document.querySelector('#start');
+const tooManyPlayers = document.querySelector('#too-many-players');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
-let virusShown = null;
 let reactionTime = null;
+let virusShown = null;
 
+/**
+ * Help functions
+ */
+
+/** Handle randomizing om data */
 const getRandomData = (randomData) => {
 	virusImg.style.left = randomData.x + 'px';
 	virusImg.style.top = randomData.y + 'px';
@@ -34,6 +39,7 @@ const getRandomData = (randomData) => {
 	}, randomData.time);
 };
 
+/** Update online player list */
 const updateOnlinePlayers = (players) => {
 	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
@@ -41,6 +47,7 @@ const updateOnlinePlayers = (players) => {
 		.join(' vs ');
 };
 
+/** Update online player list with current score */
 const updateScoreBoard = (players) => {
 	document.querySelector('#online-players').innerHTML = Object.values(players)
 		.map(
@@ -50,6 +57,7 @@ const updateScoreBoard = (players) => {
 		.join(' vs ');
 };
 
+/** Handle start game */
 const startGame = (randomData, players) => {
 	console.log('startGame', randomData, players);
 	console.log('Players length', Object.keys(players).length);
@@ -59,6 +67,7 @@ const startGame = (randomData, players) => {
 	}
 };
 
+/** Handle new round */
 const newRound = (randomData, players) => {
 	virusImg.style.display = 'none';
 	virusImg.classList.remove('hide');
@@ -69,6 +78,7 @@ const newRound = (randomData, players) => {
 	}
 };
 
+/** Handle end of game */
 const endGame = (players, winner) => {
 	console.log('Game over', players, winner);
 	gameBoard.classList.add('hide');
@@ -81,7 +91,44 @@ const endGame = (players, winner) => {
 		: `<h1>Game Over</h1><h2 class='my-2'>It's a tie!</h2>`;
 };
 
-// handle virus click
+/** Handle too many players */
+const handleTooManyPlayers = () => {
+	startEl.classList.add('hide');
+	tooManyPlayers.classList.remove('hide');
+	opponantLeftWrapper.classList.add('hide');
+
+	tooManyPlayers.innerHTML = `<div id="too-many-players-alert" class="alert alert-secondary text-center" role="alert">
+	<p>Too many players, please come back later.</p>
+	</div>`;
+};
+
+/** Handle player disconnected */
+const playerDisconnected = (players) => {
+	updateOnlinePlayers(Object.values(players));
+	gameWrapperEl.classList.add('hide');
+	opponantLeft.classList.remove('hide');
+};
+
+/**
+ * Event listeners
+ */
+
+/** Handle register-player event */
+playernameForm.addEventListener('submit', (e) => {
+	e.preventDefault();
+	playername = document.querySelector('#playername').value;
+	socket.emit('register-player', playername, (status) => {
+		console.log('Server acknowledged the registration :D', status);
+
+		if (status.joinGame) {
+			startEl.classList.add('hide');
+			gameWrapperEl.classList.remove('hide');
+			updateOnlinePlayers(status.onlinePlayers);
+		}
+	});
+});
+
+/** Handle virus click */
 virusImg.addEventListener('click', () => {
 	let clickTime = Date.now();
 	reactionTime = clickTime - virusShown;
@@ -97,21 +144,7 @@ virusImg.addEventListener('click', () => {
 	socket.emit('virus-click', playerData);
 });
 
-// get playername from form and emit 'register-player'-event to server
-playernameForm.addEventListener('submit', (e) => {
-	e.preventDefault();
-	playername = document.querySelector('#playername').value;
-	socket.emit('register-player', playername, (status) => {
-		console.log('Server acknowledged the registration :D', status);
-
-		if (status.joinGame) {
-			startEl.classList.add('hide');
-			gameWrapperEl.classList.remove('hide');
-			updateOnlinePlayers(status.onlinePlayers);
-		}
-	});
-});
-
+/** Handle play again button */
 playAgain.addEventListener('click', (e) => {
 	gameWrapperEl.classList.add('hide');
 	gameOver.classList.add('hide');
@@ -120,6 +153,7 @@ playAgain.addEventListener('click', (e) => {
 	virusImg.classList.add('hide');
 });
 
+/** Handle play again button if a user disconnected */
 playAgainDisconnect.addEventListener('submit', (e) => {
 	e.preventDefault();
 	opponantLeft.classList.add('hide');
@@ -128,15 +162,12 @@ playAgainDisconnect.addEventListener('submit', (e) => {
 	virusImg.classList.add('hide');
 });
 
+/**
+ * Incoming events from the server
+ */
+
 socket.on('online-players', (players) => {
 	updateOnlinePlayers(players);
-});
-
-socket.on('player-disconnected', (players) => {
-	console.log(`One player left the game.`);
-	updateOnlinePlayers(Object.values(players));
-	gameWrapperEl.classList.add('hide');
-	opponantLeft.classList.remove('hide');
 });
 
 socket.on('start-game', (randomData, players) => {
@@ -150,12 +181,8 @@ socket.on('end-game', (players, winner) => {
 	endGame(players, winner);
 });
 
-socket.on('too-many-players', () => {
-	startEl.classList.add('hide');
-	tooManyPlayers.classList.remove('hide');
-	opponantLeftWrapper.classList.add('hide');
+socket.on('too-many-players', handleTooManyPlayers);
 
-	tooManyPlayers.innerHTML = `<div id="too-many-players-alert" class="alert alert-secondary text-center" role="alert">
-		<p>Too many players, please come back later.</p>
-		</div>`;
+socket.on('player-disconnected', (players) => {
+	playerDisconnected(players);
 });
