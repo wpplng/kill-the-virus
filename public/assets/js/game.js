@@ -18,8 +18,6 @@ const tooManyPlayers = document.querySelector('#too-many-players');
 let virusImg = document.querySelector('#virus-img');
 
 let playername = null;
-let reactionTime = null;
-let virusShown = null;
 
 /**
  * Help functions
@@ -35,13 +33,11 @@ const getRandomData = (randomData) => {
 		virusImg.style.height = randomData.randomSize + 'px';
 		virusImg.style.display = 'block';
 		virusImg.src = `./assets/images/virus-${randomData.randomVirus}.svg`;
-		virusShown = Date.now();
 	}, randomData.time);
 };
 
 /** Update online player list */
 const updateOnlinePlayers = (players) => {
-	console.log('online players', players);
 	document.querySelector('#online-players').innerHTML = players
 		.map((player) => `<h3>${player.name}</h3>`)
 		.join(' vs ');
@@ -59,9 +55,6 @@ const updateScoreBoard = (players) => {
 
 /** Handle start game */
 const startGame = (randomData, players) => {
-	console.log('startGame', randomData, players);
-	console.log('Players length', Object.keys(players).length);
-
 	if (Object.keys(players).length === 2) {
 		getRandomData(randomData);
 	}
@@ -80,7 +73,6 @@ const newRound = (randomData, players) => {
 
 /** Handle end of game */
 const endGame = (players, winner) => {
-	console.log('Game over', players, winner);
 	gameBoard.classList.add('hide');
 	gameOver.classList.remove('hide');
 
@@ -117,9 +109,8 @@ const playerDisconnected = (players) => {
 playernameForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	playername = document.querySelector('#playername').value;
-	socket.emit('register-player', playername, (status) => {
-		console.log('Server acknowledged the registration :D', status);
 
+	socket.emit('register-player', playername, (status) => {
 		if (status.joinGame) {
 			startEl.classList.add('hide');
 			gameWrapperEl.classList.remove('hide');
@@ -130,16 +121,11 @@ playernameForm.addEventListener('submit', (e) => {
 
 /** Handle virus click */
 virusImg.addEventListener('click', () => {
-	let clickTime = Date.now();
-	reactionTime = clickTime - virusShown;
-
 	const playerData = {
 		id: socket.id,
-		reactionTime,
 	};
 
 	virusImg.classList.add('hide');
-	console.log('reaction time', reactionTime);
 
 	socket.emit('virus-click', playerData);
 });
