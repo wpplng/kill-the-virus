@@ -48,8 +48,7 @@
 }
 
 #game-over,
-#opponant-left,
-#playername-form {
+#opponant-left {
 	margin: 0 auto;
 	text-align: center;
 }
@@ -74,11 +73,23 @@
 	height: 100vh;
 }
 
+#information-text {
+	margin: auto;
+	text-align: center;
+}
+
 #online-players {
 	background-color: #ff805a;
 	padding: 0.5rem 0;
 	margin: 0 0.5rem;
 	border-color: #46555e;
+}
+
+#playername-form {
+	margin-bottom: auto;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }
 
 #score {
@@ -97,6 +108,7 @@
 	display: flex;
 	height: 100vh;
 	align-items: center;
+	flex-direction: column;
 }
 
 #too-many-players-alert {
